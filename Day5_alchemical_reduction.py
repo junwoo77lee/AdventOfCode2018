@@ -16,23 +16,22 @@ from typing import Tuple
 
 sample = 'dabAcCaCBAcCcaDA'
 
-def traveler(string: str) -> bool:
+def checker(string: str) -> bool:
     for index, char in enumerate(string):
         try:
             if abs(ord(string[index]) - ord(string[index+1])) == 32:
                 return True
         except IndexError:
             return False
-    # return False
 
 def polymerization(string: str) -> int:
-
-    while traveler(string):
+    while checker(string):
         for index, char in enumerate(string):            
             try:
                 first = string[index]
                 second = string[index + 1]
                 if abs(ord(first) - ord(second)) == 32:
+                # if (first.lower() == second.lower()) and (first != second):
                     string = string.replace(first+second, '')
             except IndexError:
                 continue
@@ -52,7 +51,6 @@ print(polymerization(entry))
 # chr(97) -> 'a', chr(97-32) -> 'A'
 
 def removing_unit(string: str, units: Tuple[str, str]) -> str:
-    
     for unit in units:
         string = string.replace(unit, '')
     
@@ -61,20 +59,23 @@ def removing_unit(string: str, units: Tuple[str, str]) -> str:
 
 def find_shortest_length(string: str) -> int:
     result_dict = {}
+    chars = {c.lower() for c in string}
 
-    for upper, lower in zip(range(97, 97+26), range(65, 65+26)):
-        upper_unit = chr(upper)
-        lower_unit = chr(lower)
+    # for upper, lower in zip(range(97, 97+26), range(65, 65+26)):
+    for char in chars:
+        upper_unit = char.upper()
+        lower_unit = char
         string_length = polymerization(removing_unit(string, (upper_unit, lower_unit)))
         result_dict.update({(upper_unit, lower_unit) : string_length})
 
-    shortest_unit_length = sorted(result_dict.items(), key=lambda x: x[1])[0]
+    # shortest_unit_length = sorted(result_dict.items(), key=lambda x: x[1])[0]
+    shortest_length = min(result_dict.values())
 
-    return shortest_unit_length[1]
+    return shortest_length
 
 assert find_shortest_length(sample) == 4
 
-print(find_shortest_length(entry))
+# print(find_shortest_length(entry))
 
 
 
