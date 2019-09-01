@@ -44,7 +44,7 @@ assert polymerization(sample) == 10
 with open('data/day5_input.txt') as f:
     entry = f.read().strip()
 
-# print(polymerization(entry))
+print(polymerization(entry))
 
 
 # PART 2:
@@ -74,7 +74,7 @@ def find_shortest_length(string: str) -> int:
 
 assert find_shortest_length(sample) == 4
 
-find_shortest_length(entry)
+print(find_shortest_length(entry))
 
 
 
