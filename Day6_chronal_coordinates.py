@@ -25,6 +25,9 @@ class Point(NamedTuple):
     def manhattan_distance(self, other: 'Point') -> int:
         return abs(self.x - other.x) + abs(self.y - other.y)
 
+    def total_manhattan_distance(self, others: List['Point']) -> int:
+        return sum(self.manhattan_distance(point) for point in others)
+
     @staticmethod
     def from_line(line: str) -> 'Point':
         x, y = line.split(', ')
@@ -75,16 +78,16 @@ def count_areas(grid: Dict[Point, int]) -> Counter:
     return areas
 
 
-# print(count_areas(GRID))
-# print(count_areas(GRID).most_common(2))
+print(count_areas(GRID))
+print(count_areas(GRID).most_common(2))
 
 with open('data/day6_input.txt') as f:
     points = [Point.from_line(line) for line in f]
 
 grid = make_grid(points)
 
-# print(count_areas(grid))
-# print(count_areas(grid).most_common(1))
+print(count_areas(grid))
+print(count_areas(grid).most_common(1))
 
 # PART 2:
 
@@ -94,19 +97,17 @@ def total_area_of_safe_coordinates(points: List[Point], criterion: int) -> int:
     min_y = min([point.y for point in points])
     max_y = max([point.y for point in points])
 
-    grid = {}
+    area = 0
 
     for x in range(min_x, max_x + 1):
         for y in range(min_y, max_y + 1):
             this = Point(x,y)
-            distances = sum(this.manhattan_distance(point) for point in points)
+            distances = this.total_manhattan_distance(points)
 
             if distances < criterion:
-                grid[this] = 1
-            else:
-                grid[this] = 0
+                area += 1
     
-    return sum(grid.values())
+    return area
 
 assert total_area_of_safe_coordinates(POINTS, 32) == 16
 
